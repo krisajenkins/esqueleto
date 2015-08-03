@@ -1361,6 +1361,15 @@ main = do
         run $ do
           [Value (ret :: String)] <- select $ return (EP.chr (val 65))
           liftIO $ ret `shouldBe` "A"
+
+      it "regexpReplace looks sane" $
+        run $ do
+          [Value (ret :: String)] <- select $ return (EP.regexpReplace
+                                                        (val ("This is a test"::String))
+                                                        (val ("[aeiou]"::String))
+                                                        (val ("x"::String))
+                                                        (val ("g"::String)))
+          liftIO $ ret `shouldBe` "Thxs xs x txst"
 #endif
 
 ----------------------------------------------------------------------

@@ -7,6 +7,7 @@ module Database.Esqueleto.PostgreSQL
   ( arrayAgg
   , stringAgg
   , chr
+  , regexpReplace
   ) where
 
 import Data.String (IsString)
@@ -42,3 +43,16 @@ stringAgg expr delim = unsafeSqlFunction "string_agg" (expr, delim)
 chr :: IsString s
     => SqlExpr (Value Int) -> SqlExpr (Value s)
 chr = unsafeSqlFunction "chr"
+
+-- | (@regexpReplace@) Replace substring(s) matching a POSIX regular expression.
+--
+-- /Since: 2.2.12/
+regexpReplace :: (IsString s)
+              => SqlExpr (Value s)
+              -> SqlExpr (Value s)
+              -> SqlExpr (Value s)
+              -> SqlExpr (Value s)
+              -> SqlExpr (Value s)
+regexpReplace string pattern replacement flags =
+  unsafeSqlFunction "regexp_replace"
+                    (string,pattern,replacement,flags)
